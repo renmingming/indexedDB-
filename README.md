@@ -12,13 +12,13 @@
             console.log(e.currentTarget.error.message);
         };
         request.onsuccess=function(e){ // 打开成功
-            myDB.db=e.target.result;
+            myDB.db=e.target.result; // 拿到数据库实例
         };
-        request.onupgradeneeded=function(e){
+        request.onupgradeneeded=function(e){ // 新建数据库或者升级数据都会触发
             let db=e.target.result;
-            if(!db.objectStoreNames.contains('students')){
-                let store = db.createObjectStore('students',{keyPath:"id", autoIncrement: true});
-                store.createIndex('groupIndex','group_id',{unique:false});
+            if(!db.objectStoreNames.contains('students')){ // 是否有这个对象仓库/表
+                let store = db.createObjectStore('students',{keyPath:"id", autoIncrement: true}); //创建对象仓库/表，主键为id，自增
+                store.createIndex('groupIndex','group_id',{unique:false});  // 创建索引groupIndex, 对象属性为group_id, unique是否唯一
                 store.createIndex('idIndex','id',{unique:true});
             }
             console.log('DB version changed to '+myDB.version);
